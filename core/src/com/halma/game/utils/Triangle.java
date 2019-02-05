@@ -10,7 +10,7 @@ public class Triangle {
         this.point1 = point1;
         this.point2 = point2;
         this.point3 = point3;
-        System.out.println("P1(" + point1.x + ", " + point1.y + "), P2(" + point2.x + ", " + point2.y + "), P3(" + point3.x + ", " + point3.y + ")");
+        //System.out.println("P1(" + point1.x + ", " + point1.y + "), P2(" + point2.x + ", " + point2.y + "), P3(" + point3.x + ", " + point3.y + ")");
     }
 
     //Methods

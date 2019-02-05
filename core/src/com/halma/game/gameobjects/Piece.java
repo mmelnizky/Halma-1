@@ -1,5 +1,6 @@
 package com.halma.game.gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -70,18 +71,35 @@ public class Piece extends GameObject {
         //System.out.println("System: " + sprite.getBoundingRectangle().x + ", " + sprite.getBoundingRectangle().y + ", " + sprite.getBoundingRectangle().width + ", " + sprite.getBoundingRectangle().height);
         if (state == PieceState.NOT_SELECTED && triangle.contains(Controls.x, Controls.y)) {//sprite.getBoundingRectangle().contains(Controls.x, Controls.y)) {
             state = PieceState.SELECTED;
+            sprite.setAlpha(0.5f);
             System.out.println("Piece changed to selected state.");
         }
     }
 
     public void move() {
         if (state == PieceState.SELECTED) {
+            TriangleUnit[][] b = handler.getGameState().getBoard().getBoard();
+            for (int j=0; j < b.length; j++) {
+                for (int i = 0; i < b[j].length; i++) {
+                    if (b[j][i].isReal() && b[j][i].isSelected() && (x != b[j][i].getX() && y != b[j][i].getY() || x == b[j][i].getX() && y != b[j][i].getY() || x != b[j][i].getX() && y == b[j][i].getY())) {
+                        state = PieceState.NOT_SELECTED;
+                        sprite.setAlpha(1);
+                        board.setPiece(x, y, null);
+                        x = b[j][i].getX();
+                        y = b[j][i].getY();
+                        board.setPiece(x, y, this);
+                        isDown = b[j][i].isDown();
+                        System.out.println("Changed to not selected state.");
+                    }
+                }
+            }
+            /*
             //move right
             if (sprite.getBoundingRectangle().contains(Controls.x-sprite.getBoundingRectangle().width, Controls.y)) {
                 state = PieceState.NOT_SELECTED;
-                board.setBoard(x, y, null);
+                board.setPiece(x, y, null);
                 x++;
-                board.setBoard(x, y, this);
+                board.setPiece(x, y, this);
                 isDown = !isDown;
                 sprite.setTexture(handler.getGameState().getRedPieceDownImg());
                 System.out.println("Piece changed to selected state 111.");
@@ -89,30 +107,30 @@ public class Piece extends GameObject {
             //move left
             if (sprite.getBoundingRectangle().contains(Controls.x+sprite.getBoundingRectangle().width, Controls.y)) {
                 state = PieceState.NOT_SELECTED;
-                board.setBoard(x, y, null);
+                board.setPiece(x, y, null);
                 x--;
-                board.setBoard(x, y, this);
+                board.setPiece(x, y, this);
                 isDown = !isDown;
                 System.out.println("Piece changed to selected state 111.");
             }
             //move up
             if (sprite.getBoundingRectangle().contains(Controls.x, Controls.y-sprite.getBoundingRectangle().height)) {
                 state = PieceState.NOT_SELECTED;
-                board.setBoard(x, y, null);
+                board.setPiece(x, y, null);
                 y++;
-                board.setBoard(x, y, this);
+                board.setPiece(x, y, this);
                 isDown = !isDown;
                 System.out.println("Piece changed to selected state 111.");
             }
             //move down
             if (sprite.getBoundingRectangle().contains(Controls.x, Controls.y+sprite.getBoundingRectangle().height)) {
                 state = PieceState.NOT_SELECTED;
-                board.setBoard(x, y, null);
+                board.setPiece(x, y, null);
                 y--;
-                board.setBoard(x, y, this);
+                board.setPiece(x, y, this);
                 isDown = !isDown;
                 System.out.println("Piece changed to selected state 111.");
-            }
+            }*/
         }
     }
 
